@@ -50,8 +50,34 @@ def book(competition,club):
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
-    placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+    
+    try:
+        placesRequired = int(request.form['places'])
+        if placesRequired <= 0:
+            flash('Please enter a positive number of places.')
+            return render_template('booking.html', club=club, competition=competition)
+    except ValueError:
+        flash('Please enter a valid number of places.')
+        return render_template('booking.html', club=club, competition=competition)
+    
+    # Phase 0: Gestion des points (1 place = 3 points par exemple)
+    club_points = int(club['points'])
+    points_needed = placesRequired * 3  # À ajuster selon vos spécifications
+    
+    if points_needed > club_points:
+        flash(f'Not enough points. You need {points_needed} points but only have {club_points}.')
+        return render_template('booking.html', club=club, competition=competition)
+    
+    # Phase 0: Éviter la surréservation
+    available_places = int(competition['numberOfPlaces'])
+    if placesRequired > available_places:
+        flash(f'Not enough places available. Only {available_places} places left.')
+        return render_template('booking.html', club=club, competition=competition)
+    
+    # Mise à jour des données
+    competition['numberOfPlaces'] = str(available_places - placesRequired)
+    club['points'] = str(club_points - points_needed)
+    
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
