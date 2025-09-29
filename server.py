@@ -60,10 +60,10 @@ def purchasePlaces():
         flash('Please enter a valid number of places.')
         return render_template('booking.html', club=club, competition=competition)
     
-    # Phase 0: Gestion des points (1 place = 3 points par exemple)
+    # Phase 0: Gestion des points (1 place = 3 points)
     club_points = int(club['points'])
-    points_needed = placesRequired * 3  # À ajuster selon vos spécifications
-    
+    points_needed = placesRequired * 3
+
     if points_needed > club_points:
         flash(f'Not enough points. You need {points_needed} points but only have {club_points}.')
         return render_template('booking.html', club=club, competition=competition)
