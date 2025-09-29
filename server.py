@@ -96,5 +96,13 @@ def purchasePlaces():
 @app.route('/logout')
 def logout():
     return redirect(url_for('index'))
+
+def saveClubs():
+    with open('clubs.json', 'w') as c:
+        json.dump({"clubs": clubs}, c, indent=4)
+
+def saveCompetitions():
+    with open('competitions.json', 'w') as comps:
+        json.dump({"competitions": competitions}, comps, indent=4)
 if __name__ == '__main__':
     app.run(debug=True)
