@@ -78,6 +78,8 @@ def purchasePlaces():
     competition['numberOfPlaces'] = str(available_places - placesRequired)
     club['points'] = str(club_points - points_needed)
     
+    # TODO: Add code to save updated competition and club data back to JSON files
+    
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
