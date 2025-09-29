@@ -34,6 +34,12 @@ def showSummary():
         flash("Sorry, that email wasn't found.")
         return redirect(url_for('index'))
 
+# Ajoutons une route GET pour showSummary pour le lien retour
+@app.route('/showSummary')
+def showSummaryGet():
+    # Redirection vers l'accueil si accès direct
+    return redirect(url_for('index'))
+
 
 @app.route('/book/<competition>/<club>')
 def book(competition,club):

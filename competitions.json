@@ -9,6 +9,11 @@
             "name": "Fall Classic",
             "date": "2020-10-22 13:30:00",
             "numberOfPlaces": "13"
+        },
+        {
+            "name": "Divine and co",
+            "date": "2025-01-22 13:30:00",
+            "numberOfPlaces": "8"
         }
     ]
 }

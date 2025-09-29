@@ -6,11 +6,27 @@
 </head>
 <body>
     <h2>{{competition['name']}}</h2>
-    Places available: {{competition['numberOfPlaces']}}
+    <a href="{{ url_for('showSummary') }}">← Back to competitions</a>
+    
+    <!-- AJOUT DE LA GESTION DES MESSAGES FLASH -->
+    {% with messages = get_flashed_messages()%}
+    {% if messages %}
+        <ul style="color: red; background-color: #ffeeee; padding: 10px; margin: 10px 0;">
+       {% for message in messages %}
+            <li>{{message}}</li>
+        {% endfor %}
+       </ul>
+    {% endif%}
+    {% endwith%}
+    
+    <p><strong>Places available:</strong> {{competition['numberOfPlaces']}}</p>
+    <p><strong>Your points:</strong> {{club['points']}}</p>
+    
     <form action="/purchasePlaces" method="post">
         <input type="hidden" name="club" value="{{club['name']}}">
         <input type="hidden" name="competition" value="{{competition['name']}}">
-        <label for="places">How many places?</label><input type="number" name="places" id=""/>
+        <label for="places">How many places?</label>
+        <input type="number" name="places" id="places" min="1" required>
         <button type="submit">Book</button>
     </form>
 </body>
