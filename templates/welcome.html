@@ -30,6 +30,13 @@
         <hr />
         {% endfor %}
     </ul>
+    
+    <!-- AJOUT DU LIEN VERS LE TABLEAU DES POINTS -->
+    <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0;">
+        <p><strong>📊 <a href="{{ url_for('showPoints') }}">View all club points</a></strong></p>
+        <small><em>Transparency requirement - see all club points to avoid favoritism</em></small>
+    </div>
+    
     {%endwith%}
 
 </body>

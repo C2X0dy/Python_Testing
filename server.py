@@ -91,6 +91,10 @@ def purchasePlaces():
 
 
 # TODO: Add route for points display
+@app.route('/points')
+def showPoints():
+    """Affiche le tableau des points pour tous les clubs (Phase 0)"""
+    return render_template('points.html', clubs=clubs)
 
 
 @app.route('/logout')
