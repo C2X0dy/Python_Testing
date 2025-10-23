@@ -1,22 +1,61 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GUDLFT Registration</title>
+    <title>GUDLFT Registration | Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>">
 </head>
 <body>
-    <h1>Welcome to the GUDLFT Registration Portal!</h1>
-    Please enter your secretary email to continue:
-    <form action="showSummary" method="post">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id=""/>
-        <button type="submit">Enter</button>
-    </form>
-    
-    <!-- AJOUT DU LIEN PUBLIC VERS LE TABLEAU DES POINTS -->
-    <div style="margin-top: 30px; text-align: center;">
-        <p>📊 <a href="{{ url_for('showPoints') }}">View Club Points</a> | 
-           <small>Public transparency display</small></p>
+    <div class="container fade-in">
+        <div class="header">
+            <h1>🏋️‍♀️ GUDLFT Registration Portal</h1>
+            <p style="color: white; font-size: 1.2rem; margin-top: 10px;">Your gateway to competitive lifting excellence</p>
+        </div>
+
+        <div class="card">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Secretary Login</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                Enter your registered email address to access competition booking
+            </p>
+            
+            <form action="showSummary" method="post">
+                <div class="form-group">
+                    <label for="email">📧 Email Address:</label>
+                    <input type="email" 
+                           name="email" 
+                           id="email" 
+                           class="form-control"
+                           placeholder="secretary@yourclub.com"
+                           required
+                           autocomplete="email">
+                </div>
+                <div style="text-align: center;">
+                    <button type="submit" class="btn btn-primary">
+                        🚀 Enter Portal
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="transparency-note">
+            <h3 style="color: #333; margin-bottom: 15px;">📊 Transparency & Fairness</h3>
+            <p style="color: #555; margin-bottom: 15px;">
+                View all club points publicly to ensure fair competition access
+            </p>
+            <div style="text-align: center;">
+                <a href="{{ url_for('showPoints') }}" class="btn btn-secondary">
+                    📈 View All Club Points
+                </a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; color: white;">
+            <p style="font-size: 0.9rem; opacity: 0.8;">
+                🔒 Secure • 🏆 Professional • ⚡ Fast Booking System
+            </p>
+        </div>
     </div>
 </body>
 </html>

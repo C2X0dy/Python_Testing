@@ -1,74 +1,94 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Club Points Display | GUDLFT</title>
-    <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background-color: #f5f5f5; 
-            color: #333; 
-            margin: 20px;
-        }
-        h2 { 
-            color: #555; 
-            border-bottom: 2px solid #ddd; 
-            padding-bottom: 10px;
-        }
-        table { 
-            border-collapse: collapse; 
-            width: 100%; 
-            max-width: 600px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        th, td { 
-            border: 1px solid #ccc; 
-            padding: 12px; 
-            text-align: left; 
-        }
-        th { 
-            background-color: #e0e0e0; 
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .nav-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 15px;
-            background-color: #ddd;
-            color: #333;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-        .nav-link:hover {
-            background-color: #ccc;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>">
 </head>
 <body>
-    <h2>Club Points Display</h2>
-    <p><em>Current points for all registered clubs</em></p>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>Club Name</th>
-                <th>Points Available</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for club in clubs %}
-            <tr>
-                <td>{{club['name']}}</td>
-                <td>{{club['points']}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <a href="{{ url_for('index') }}" class="nav-link">← Back to Home</a>
+    <div class="container fade-in">
+        <div class="header">
+            <h2>📊 Club Points Leaderboard</h2>
+            <p style="color: white; font-size: 1.1rem; margin-top: 10px;">
+                Transparent view of all club points for fair competition
+            </p>
+        </div>
+
+        <div class="card">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h3 style="color: #333; margin-bottom: 15px;">🏆 Current Points Standing</h3>
+                <p style="color: #666;">
+                    Real-time display of points available for all registered clubs
+                </p>
+            </div>
+
+            <div class="table-container">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>🏋️ Club Name</th>
+                            <th>💎 Points Available</th>
+                            <th>📊 Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for club in clubs %}
+                        <tr>
+                            <td>
+                                <strong>{{club['name']}}</strong>
+                            </td>
+                            <td>
+                                <span style="font-size: 1.3rem; font-weight: 700; color: #007bff;">
+                                    {{club['points']}}
+                                </span>
+                            </td>
+                            <td>
+                                {% if club['points']|int >= 12 %}
+                                    <span style="color: #28a745; font-weight: 600;">🟢 Active</span>
+                                {% elif club['points']|int >= 6 %}
+                                    <span style="color: #ffc107; font-weight: 600;">🟡 Moderate</span>
+                                {% else %}
+                                    <span style="color: #dc3545; font-weight: 600;">🔴 Low</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%); padding: 20px; border-radius: 15px; margin-top: 30px;">
+                <h4 style="color: #333; margin-bottom: 15px;">ℹ️ Points Information</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                    <div>
+                        <strong>💰 Exchange Rate:</strong><br>
+                        <span style="color: #666;">1 Competition Place = 3 Points</span>
+                    </div>
+                    <div>
+                        <strong>📏 Booking Limit:</strong><br>
+                        <span style="color: #666;">Maximum 12 places per competition</span>
+                    </div>
+                    <div>
+                        <strong>🔄 Updates:</strong><br>
+                        <span style="color: #666;">Real-time after each booking</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                🏠 Back to Home
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; color: white;">
+            <p style="font-size: 0.9rem; opacity: 0.8;">
+                🔍 Transparency • 📊 Real-time • ⚖️ Fair Competition
+            </p>
+        </div>
+    </div>
 </body>
 </html>

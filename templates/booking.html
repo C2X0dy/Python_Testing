@@ -1,34 +1,127 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking for {{competition['name']}} || GUDLFT</title>
+    <title>Booking {{competition['name']}} | GUDLFT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>">
 </head>
 <body>
-    <h2>{{competition['name']}}</h2>
-    <a href="{{ url_for('showSummary') }}">← Back to competitions</a>
-    
-    <!-- AJOUT DE LA GESTION DES MESSAGES FLASH -->
-    {% with messages = get_flashed_messages()%}
-    {% if messages %}
-        <ul style="color: red; background-color: #ffeeee; padding: 10px; margin: 10px 0;">
-       {% for message in messages %}
-            <li>{{message}}</li>
-        {% endfor %}
-       </ul>
-    {% endif%}
-    {% endwith%}
-    
-    <p><strong>Places available:</strong> {{competition['numberOfPlaces']}}</p>
-    <p><strong>Your points:</strong> {{club['points']}}</p>
-    
-    <form action="/purchasePlaces" method="post">
-        <input type="hidden" name="club" value="{{club['name']}}">
-        <input type="hidden" name="competition" value="{{competition['name']}}">
-        <label for="places">How many places? (Maximum 12 per booking)</label>
-        <input type="number" name="places" id="places" min="1" max="12" required>
-        <small>Cost: 3 points per place | Available: {{competition['numberOfPlaces']}} places</small>
-        <button type="submit">Book</button>
-    </form>
+    <div class="container fade-in">
+        <div class="header">
+            <h2>🎫 Booking: {{competition['name']}}</h2>
+            <div style="margin-top: 15px;">
+                <a href="{{ url_for('showSummaryGet') }}" class="btn btn-secondary">
+                    ← Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages()%}
+        {% if messages %}
+            <div class="alert alert-error">
+                {% for message in messages %}
+                    <div>⚠️ {{message}}</div>
+                {% endfor %}
+            </div>
+        {% endif%}
+        {% endwith%}
+
+        <div class="booking-summary">
+            <h4>📊 Booking Summary</h4>
+            <div class="cost-calculator">
+                <div class="cost-item">
+                    <strong>🎯 Available Places</strong>
+                    <div style="font-size: 1.5rem; color: #28a745;">{{competition['numberOfPlaces']}}</div>
+                </div>
+                <div class="cost-item">
+                    <strong>💎 Your Points</strong>
+                    <div style="font-size: 1.5rem; color: #007bff;">{{club['points']}}</div>
+                </div>
+                <div class="cost-item">
+                    <strong>💰 Cost per Place</strong>
+                    <div style="font-size: 1.5rem; color: #dc3545;">3 points</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="text-align: center; margin-bottom: 30px; color: #333;">
+                Complete Your Booking
+            </h3>
+            
+            <form action="/purchasePlaces" method="post" id="bookingForm">
+                <input type="hidden" name="club" value="{{club['name']}}">
+                <input type="hidden" name="competition" value="{{competition['name']}}">
+                
+                <div class="form-group">
+                    <label for="places">🎫 Number of Places (Maximum 12 per booking):</label>
+                    <input type="number" 
+                           name="places" 
+                           id="places" 
+                           class="form-control"
+                           min="1" 
+                           max="12" 
+                           required
+                           oninput="calculateCost()">
+                    <small style="color: #666; margin-top: 5px; display: block;">
+                        💡 Tip: Each place costs 3 points. Maximum 12 places to ensure fairness.
+                    </small>
+                </div>
+
+                <div class="booking-summary" id="costPreview" style="display: none;">
+                    <h4>💳 Cost Preview</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>Places: <span id="selectedPlaces">0</span></span>
+                        <span>Total Cost: <span id="totalCost">0</span> points</span>
+                        <span>Remaining: <span id="remainingPoints">{{club['points']}}</span> points</span>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary" style="font-size: 1.1rem; padding: 20px 40px;">
+                        🚀 Confirm Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+    function calculateCost() {
+        const places = document.getElementById('places').value;
+        const clubPoints = {{club['points']}};
+        const costPreview = document.getElementById('costPreview');
+        
+        if (places && places > 0) {
+            const totalCost = places * 3;
+            const remaining = clubPoints - totalCost;
+            
+            // Animations améliorées
+            document.getElementById('selectedPlaces').textContent = places;
+            document.getElementById('totalCost').textContent = totalCost;
+            document.getElementById('remainingPoints').textContent = remaining;
+            
+            costPreview.style.display = 'block';
+            costPreview.classList.add('fade-in');
+            
+            // Effet visuel amélioré
+            const remainingElement = document.getElementById('remainingPoints');
+            if (remaining < 0) {
+                remainingElement.style.color = '#dc3545';
+                remainingElement.style.fontWeight = 'bold';
+                remainingElement.parentElement.style.background = 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)';
+            } else {
+                remainingElement.style.color = '#28a745';
+                remainingElement.style.fontWeight = 'bold';
+                remainingElement.parentElement.style.background = 'linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%)';
+            }
+        } else {
+            costPreview.style.display = 'none';
+        }
+    }
+    </script>
 </body>
 </html>

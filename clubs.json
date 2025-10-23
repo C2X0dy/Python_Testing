@@ -1,22 +1,24 @@
-{"clubs":[
-    {
-        "name":"Simply Lift",
-        "email":"john@simplylift.co",
-        "points":"13"
-    },
-    {
-        "name":"Iron Temple",
-        "email": "admin@irontemple.com",
-        "points":"4"
-    },
-    {   "name":"She Lifts",
-        "email": "kate@shelifts.co.uk",
-        "points":"12"
-    },
-
-     {
-        "name":"Test",
-        "email": "divineyoboukoi2005@gmail.com",
-        "points":"2"
-    }
-]}
+{
+    "clubs": [
+        {
+            "name": "Simply Lift",
+            "email": "john@simplylift.co",
+            "points": "13"
+        },
+        {
+            "name": "Iron Temple",
+            "email": "admin@irontemple.com",
+            "points": "4"
+        },
+        {
+            "name": "She Lifts",
+            "email": "kate@shelifts.co.uk",
+            "points": "6"
+        },
+        {
+            "name": "Test",
+            "email": "divineyoboukoi2005@gmail.com",
+            "points": "2"
+        }
+    ]
+}

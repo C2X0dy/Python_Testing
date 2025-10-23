@@ -1,43 +1,81 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summary | GUDLFT Registration</title>
+    <title>Dashboard | GUDLFT Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>">
 </head>
 <body>
-        <h2>Welcome, {{club['email']}} </h2><a href="{{url_for('logout')}}">Logout</a>
+    <div class="container fade-in">
+        <a href="{{url_for('logout')}}" class="logout-btn">🚪 Logout</a>
+        
+        <div class="header">
+            <h2>Welcome back! 👋</h2>
+            <p style="color: white; font-size: 1.1rem; margin-top: 10px;">
+                📧 {{club['email']}}
+            </p>
+        </div>
 
-    {% with messages = get_flashed_messages()%}
-    {% if messages %}
-        <ul>
-       {% for message in messages %}
-            <li>{{message}}</li>
-        {% endfor %}
-       </ul>
-    {% endif%}
-    Points available: {{club['points']}}
-    <h3>Competitions:</h3>
-    <ul>
-        {% for comp in competitions%}
-        <li>
-            {{comp['name']}}<br />
-            Date: {{comp['date']}}</br>
-            Number of Places: {{comp['numberOfPlaces']}}
-            {%if comp['numberOfPlaces']|int >0%}
-            <a href="{{ url_for('book',competition=comp['name'],club=club['name']) }}">Book Places</a>
-            {%endif%}
-        </li>
-        <hr />
-        {% endfor %}
-    </ul>
-    
-    <!-- AJOUT DU LIEN VERS LE TABLEAU DES POINTS -->
-    <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0;">
-        <p><strong>📊 <a href="{{ url_for('showPoints') }}">View all club points</a></strong></p>
-        <small><em>Transparency requirement - see all club points to avoid favoritism</em></small>
+        {% with messages = get_flashed_messages()%}
+        {% if messages %}
+            <div class="alert alert-success">
+                {% for message in messages %}
+                    <div>✅ {{message}}</div>
+                {% endfor %}
+            </div>
+        {% endif%}
+        {% endwith%}
+
+        <div class="points-display">
+            <h3>💎 Your Club Points</h3>
+            <div class="points-number">{{club['points']}}</div>
+            <p style="color: #555; margin-top: 10px;">
+                Points available for booking competitions
+            </p>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #333; margin-bottom: 20px; text-align: center;">
+                🏆 Available Competitions
+            </h3>
+            
+            <div class="competition-list">
+                {% for comp in competitions%}
+                <div class="competition-item">
+                    <div class="competition-title">{{comp['name']}}</div>
+                    <div class="competition-date">📅 {{comp['date']}}</div>
+                    <div class="competition-places">
+                        🎯 Places Available: {{comp['numberOfPlaces']}}
+                    </div>
+                    
+                    {%if comp['numberOfPlaces']|int > 0%}
+                        <a href="{{ url_for('book',competition=comp['name'],club=club['name']) }}" 
+                           class="btn btn-primary" style="width: 100%;">
+                            🎫 Book Places
+                        </a>
+                    {%else%}
+                        <button class="btn btn-danger" style="width: 100%;" disabled>
+                            😞 Fully Booked
+                        </button>
+                    {%endif%}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="transparency-note">
+            <h4 style="color: #333; margin-bottom: 15px;">🔍 Transparency Dashboard</h4>
+            <p style="color: #555; margin-bottom: 15px;">
+                View all club points to ensure fair access to competitions
+            </p>
+            <div style="text-align: center;">
+                <a href="{{ url_for('showPoints') }}" class="btn btn-secondary">
+                    📊 View All Club Points
+                </a>
+            </div>
+        </div>
     </div>
-    
-    {%endwith%}
-
 </body>
 </html>
